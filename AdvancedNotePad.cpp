@@ -12,19 +12,20 @@ AdvancedNotePad::AdvancedNotePad(QWidget* parent)
 
 
 void AdvancedNotePad::on_actionNew_File_triggered() {
-	qDebug("Bonjour dfkljgbn");
+	qDebug("New File");
 	currentFile.clear();
 	ui.textEdit->setText(QString());
 
 }
 
 void AdvancedNotePad::on_actionOpen_triggered() {
+	qDebug("Opening file");
 	QString filename = QFileDialog::getOpenFileName(this, "Open the file");
-
 	QFile file(filename);
 	currentFile = filename;
 	if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
 		QMessageBox::warning(this, "Warning", "Cannot open file :" + file.errorString());
+		return;
 	}
 	setWindowTitle(filename);
 	QTextStream in(&file);
@@ -33,9 +34,26 @@ void AdvancedNotePad::on_actionOpen_triggered() {
 	file.close();
 }
 
+void AdvancedNotePad::on_actionSave_as_triggered() {
+
+	QString filename = QFileDialog::getSaveFileName(this, "Saved as");
+	QFile file(filename);
+	currentFile = filename;
+	if (!file.open(QFile::WriteOnly | QFile::Text)) {
+		QMessageBox::warning(this, "Warning", "Cannot save file :" + file.errorString());
+		return;
+	}
+	currentFile = filename;
+	setWindowTitle(filename);
+	QTextStream ou(&file);
+	QString text = ui.textEdit->toPlainText();
+	ou << text;
+	file.close();
+
+}
+
 void AdvancedNotePad::on_actionQuit_triggered()
 {
 	qDebug("Closing application");
 	QCoreApplication::quit();
-
 }
