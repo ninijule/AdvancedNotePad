@@ -35,7 +35,7 @@ void AdvancedNotePad::on_actionOpen_triggered() {
 }
 
 void AdvancedNotePad::on_actionSave_as_triggered() {
-
+	qDebug("Save As");
 	QString filename = QFileDialog::getSaveFileName(this, "Saved as");
 	QFile file(filename);
 	currentFile = filename;
@@ -51,6 +51,13 @@ void AdvancedNotePad::on_actionSave_as_triggered() {
 	file.close();
 
 }
+
+void AdvancedNotePad::on_actionAbout_triggered()
+{
+	qDebug("About application");
+	QMessageBox::information(this, "Information", "This software has been developed in C++ by Julian Beutin");
+}
+
 
 void AdvancedNotePad::on_actionQuit_triggered()
 {
